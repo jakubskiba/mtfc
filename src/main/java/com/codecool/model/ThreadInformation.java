@@ -1,5 +1,6 @@
 package com.codecool.model;
 
+import com.codecool.controller.Controller;
 import com.codecool.service.FileCopier;
 import com.codecool.view.View;
 
@@ -14,15 +15,13 @@ public class ThreadInformation {
     private Integer portionSize;
     private Boolean isChanged;
 
-    public static List<ThreadInformation> threadInformations = new ArrayList<>();
-
     public ThreadInformation(String from, String to, Integer progress, Integer portionSize) {
         this.from = from;
         this.to = to;
         this.progress = progress;
         this.portionSize = portionSize;
         this.isChanged = true;
-        ThreadInformation.threadInformations.add(this);
+        Controller.informationList.add(this);
     }
 
     public String getFrom() {

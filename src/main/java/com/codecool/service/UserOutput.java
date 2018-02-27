@@ -26,7 +26,7 @@ public class UserOutput extends Thread {
 
     private void printInfo() {
         Boolean isAnyInfoUpdated = false;
-        for(ThreadInformation information : ThreadInformation.threadInformations) {
+        for(ThreadInformation information : Controller.informationList) {
             if(information.getChanged()) {
                 isAnyInfoUpdated = true;
                 information.setChanged(false);
@@ -34,7 +34,7 @@ public class UserOutput extends Thread {
         }
 
         if(isAnyInfoUpdated) {
-            view.printInfo(ThreadInformation.threadInformations);
+            view.printInfo(Controller.informationList);
             isAnyInfoUpdated = false;
         }
     }

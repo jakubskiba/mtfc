@@ -35,6 +35,7 @@ public class UserInput extends Thread {
             FileOutputStream outputStream = new FileOutputStream(outputFile);
             ThreadInformation threadInformation = new ThreadInformation(inputFile, outputFile, 0, 1024);
             FileCopier fileCopier = new FileCopier(inputStream, outputStream, threadInformation);
+            Controller.copiers.add(fileCopier);
             fileCopier.start();
             System.out.println("started");
         } catch (FileNotFoundException e) {
