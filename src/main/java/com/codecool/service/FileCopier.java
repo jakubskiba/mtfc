@@ -65,17 +65,4 @@ public class FileCopier extends Thread {
     public String toString() {
         return String.format("%d%%", this.progress);
     }
-
-    public static void main(String[] args) throws FileNotFoundException {
-        String inputFile = "/home/kyubu/Downloads/The.Big.Bang.Theory.S11E11.HDTV.x264-SVA[eztv].mkv";
-        String outputFile = "/tmp/f.mkv";
-        FileInputStream inputStream = new FileInputStream(inputFile);
-        FileOutputStream outputStream = new FileOutputStream(outputFile);
-        FileCopier fc = new FileCopier(inputFile, outputFile, inputStream, outputStream, 1024);
-        fc.start();
-        while (fc.isAlive()) {
-            System.out.println(fc);
-        }
-        System.out.println(fc);
-    }
 }
