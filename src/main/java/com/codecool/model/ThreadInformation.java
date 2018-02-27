@@ -1,5 +1,6 @@
 package com.codecool.model;
 
+import com.codecool.service.FileCopier;
 import com.codecool.view.View;
 
 import java.util.ArrayList;
@@ -11,12 +12,17 @@ public class ThreadInformation {
     private String to;
     private Integer progress;
     private Integer portionSize;
+    private Boolean isChanged;
+
+    public static List<ThreadInformation> threadInformations = new ArrayList<>();
 
     public ThreadInformation(String from, String to, Integer progress, Integer portionSize) {
         this.from = from;
         this.to = to;
         this.progress = progress;
         this.portionSize = portionSize;
+        this.isChanged = true;
+        ThreadInformation.threadInformations.add(this);
     }
 
     public String getFrom() {
@@ -49,6 +55,14 @@ public class ThreadInformation {
 
     public void setPortionSize(Integer portionSize) {
         this.portionSize = portionSize;
+    }
+
+    public Boolean getChanged() {
+        return isChanged;
+    }
+
+    public void setChanged(Boolean changed) {
+        isChanged = changed;
     }
 
     public static void main(String[] args) {
