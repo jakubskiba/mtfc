@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Scanner;
 
 public class View {
+    private final int PATH_CELL_WIDTH = 30;
     private Scanner in;
 
     public View(Scanner in) {
@@ -32,11 +33,15 @@ public class View {
         System.err.println("No such file");
     }
 
-    public void printInfo(List<ThreadInformation> informationList) {
+    public void cleanScreen() {
         for(int i = 0; i<50; i++) {
             System.out.println();
         }
-        System.out.printf("|%-10s|%-10s|%-8s|%-10s|%n", "from", "to", "progress", "status bar");
+    }
+
+    public void printInfo(List<ThreadInformation> informationList) {
+        cleanScreen();
+        System.out.printf("|%-30s|%-30s|%-8s|%-10s|%n", "from", "to", "progress", "status bar");
         for(int i = 0; i<44;i++) {
             System.out.print("-");
         }
@@ -46,9 +51,20 @@ public class View {
         }
     }
 
+    private String getLastCharacters(String str, int amount) {
+        if(str.length() <= amount) {
+            return str;
+        } else {
+            return str.substring(str.length()-amount, str.length());
+        }
+    }
+
     private String getInfoString(ThreadInformation info) {
         StringBuilder sb = new StringBuilder();
-        sb.append(String.format("|%-10s|%-10s|%-7d%%|", info.getFrom(), info.getTo(), info.getProgress()));
+        String from = getLastCharacters(info.getFrom(), PATH_CELL_WIDTH);
+        String to = getLastCharacters(info.getTo(), PATH_CELL_WIDTH);
+
+        sb.append(String.format("|%-30s|%-30s|%-7d%%|", from, to, info.getProgress()));
         int progress = info.getProgress() / 10;
         int rest = 10 - progress;
         for(int i = 0; i < progress; i++) {
@@ -62,5 +78,9 @@ public class View {
         sb.append("|");
 
         return sb.toString();
+    }
+
+    public String getLine() {
+        return in.nextLine();
     }
 }
