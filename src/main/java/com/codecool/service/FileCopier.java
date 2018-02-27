@@ -31,27 +31,33 @@ public class FileCopier extends Thread {
     }
 
     private void copy() {
-
-        int portionsAmount = this.size / this.portionSize;
         try {
-
-            byte[] portion = new byte[this.portionSize];
-            for (int i = 0; i<portionsAmount; i++) {
-                this.inputStream.read(portion);
-                this.outputStream.write(portion);
-
-                this.progress = (int) ((float) i / portionsAmount * 100);
-            }
-
-            portion = new byte[this.size % this.portionSize];
-            if (this.inputStream.read(portion) != -1) {
-                this.inputStream.read(portion);
-                this.outputStream.write(portion);
-            }
-            this.progress = 100;
+            copyByPortion();
+            copyRest();
 
         } catch (IOException e) {
             e.printStackTrace();
+        }
+    }
+
+    private void copyRest() throws IOException {
+        byte[] portion = new byte[this.size % this.portionSize];
+        if (this.inputStream.read(portion) != -1) {
+            this.inputStream.read(portion);
+            this.outputStream.write(portion);
+        }
+        this.progress = 100;
+    }
+
+    private void copyByPortion() throws IOException {
+        int portionsAmount = this.size / this.portionSize;
+
+        byte[] portion = new byte[this.portionSize];
+        for (int i = 0; i<portionsAmount; i++) {
+            this.inputStream.read(portion);
+            this.outputStream.write(portion);
+
+            this.progress = (int) ((float) i / portionsAmount * 100);
         }
     }
 
@@ -61,8 +67,8 @@ public class FileCopier extends Thread {
     }
 
     public static void main(String[] args) throws FileNotFoundException {
-        String inputFile = "/home/maciej/Pobrane/skypeforlinux-64.deb";
-        String outputFile = "/tmp/a.deb";
+        String inputFile = "/home/kyubu/Downloads/The.Big.Bang.Theory.S11E11.HDTV.x264-SVA[eztv].mkv";
+        String outputFile = "/tmp/f.mkv";
         FileInputStream inputStream = new FileInputStream(inputFile);
         FileOutputStream outputStream = new FileOutputStream(outputFile);
         FileCopier fc = new FileCopier(inputFile, outputFile, inputStream, outputStream, 1024);
