@@ -1,5 +1,7 @@
 package com.codecool.service;
 
+import com.codecool.model.ThreadInformation;
+
 import java.io.*;
 
 public class FileCopier extends Thread {
@@ -11,16 +13,20 @@ public class FileCopier extends Thread {
     private FileInputStream inputStream;
     private FileOutputStream outputStream;
     private int portionSize;
+    private ThreadInformation threadInformation;
 
-    public FileCopier(String inputFile, String outputFile, FileInputStream inputStream,
-                      FileOutputStream outputStream, int portionSize) {
-        this.inputFile = inputFile;
-        this.outputFile = outputFile;
-        this.progress = 0;
+    public FileCopier(FileInputStream inputStream,
+                      FileOutputStream outputStream, ThreadInformation threadInformation) {
         this.size = 0;
         this.inputStream = inputStream;
         this.outputStream = outputStream;
-        this.portionSize = portionSize;
+
+        this.threadInformation = threadInformation;
+
+        this.inputFile = threadInformation.getFrom();
+        this.outputFile = threadInformation.getTo();
+        this.progress = threadInformation.getProgress();
+        this.portionSize = threadInformation.getPortionSize();
     }
 
     @Override
@@ -47,6 +53,8 @@ public class FileCopier extends Thread {
             this.outputStream.write(portion);
         }
         this.progress = 100;
+        this.threadInformation.setProgress(progress);
+        this.threadInformation.setChanged(true);
     }
 
     private void copyByPortion() throws IOException {
@@ -57,7 +65,12 @@ public class FileCopier extends Thread {
             this.inputStream.read(portion);
             this.outputStream.write(portion);
 
+            int previousProgress = this.progress;
             this.progress = (int) ((float) i / portionsAmount * 100);
+            if(progress == previousProgress) {
+                this.threadInformation.setProgress(progress);
+                this.threadInformation.setChanged(true);
+            }
         }
     }
 
