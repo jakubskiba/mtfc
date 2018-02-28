@@ -37,41 +37,53 @@ public class FileCopier extends Thread {
     }
 
     private void copy() {
+
         try {
-            copyByPortion();
-            copyRest();
+            this.copyByPortion();
+            this.copyRest();
 
         } catch (IOException e) {
             e.printStackTrace();
+
+        } catch (InterruptedException e) {
+            this.threadInformation.setCancelled(true);
         }
+
     }
 
     private void copyRest() throws IOException {
         byte[] portion = new byte[this.size % this.portionSize];
+
         if (this.inputStream.read(portion) != -1) {
             this.inputStream.read(portion);
             this.outputStream.write(portion);
         }
+
         this.progress = 100;
         this.threadInformation.setProgress(progress);
         this.threadInformation.setChanged(true);
     }
 
-    private void copyByPortion() throws IOException {
+    private void copyByPortion() throws IOException, InterruptedException {
         int portionsAmount = this.size / this.portionSize;
 
         byte[] portion = new byte[this.portionSize];
+
         for (int i = 0; i<portionsAmount; i++) {
             this.inputStream.read(portion);
             this.outputStream.write(portion);
+            Thread.sleep(0, 1);
 
             int previousProgress = this.progress;
             this.progress = (int) ((float) i / portionsAmount * 100);
+
             if(progress == previousProgress) {
                 this.threadInformation.setProgress(progress);
                 this.threadInformation.setChanged(true);
             }
+
         }
+
     }
 
     @Override

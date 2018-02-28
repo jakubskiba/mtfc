@@ -14,6 +14,15 @@ public class ThreadInformation {
     private Integer progress;
     private Integer portionSize;
     private Boolean isChanged;
+    private Boolean isCancelled;
+
+    public Boolean getCancelled() {
+        return isCancelled;
+    }
+
+    public void setCancelled(Boolean cancelled) {
+        isCancelled = cancelled;
+    }
 
     public ThreadInformation(String from, String to, Integer progress, Integer portionSize) {
         this.from = from;
@@ -21,6 +30,7 @@ public class ThreadInformation {
         this.progress = progress;
         this.portionSize = portionSize;
         this.isChanged = true;
+        this.isCancelled = false;
         Controller.informationList.add(this);
     }
 
