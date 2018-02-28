@@ -23,8 +23,8 @@ public class View {
         return in.nextLine();
     }
 
-    public boolean getOverride() {
-        System.out.print("override? (y/n): ");
+    public boolean getOverwrite() {
+        System.out.print("overwrite? (y/n): ");
         String line = in.nextLine();
         return line.equalsIgnoreCase("y");
     }
