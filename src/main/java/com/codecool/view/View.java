@@ -77,7 +77,13 @@ public class View {
 
         sb.append("|");
 
-        return sb.toString();
+        String infoString = sb.toString();
+
+        if (progress == 10) {
+            infoString = infoString.replace("100    %", "  Done  ");
+        }
+
+        return infoString;
     }
 
     public String getLine() {
