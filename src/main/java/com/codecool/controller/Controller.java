@@ -15,6 +15,7 @@ public class Controller {
     private View view;
     private CopierInitializer initializer;
 
+    public static Boolean isRunning = true;
     public static List<ThreadInformation> informationList = new ArrayList<>();
     
     public Controller(View view, CopierInitializer initializer) {
@@ -24,7 +25,7 @@ public class Controller {
 
     public void startController() {
         ExecutorService ioExecutor = Executors.newFixedThreadPool(1);
-        while (true) {
+        while (isRunning) {
             UserOutput userOutput = new UserOutput(view);
             userOutput.setPriority(Thread.MAX_PRIORITY);
             Future outputFuture = ioExecutor.submit(userOutput);
@@ -41,5 +42,8 @@ public class Controller {
                 }
             }
         }
+
+        ioExecutor.shutdown();
+        initializer.shutdown();
     }
 }

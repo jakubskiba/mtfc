@@ -42,8 +42,15 @@ public class UserInput extends Thread {
                 this.cancelTask(threadIdToCancel);
                 break;
 
-
+            case "4":
+                this.stopProgram();
+                break;
         }
+    }
+
+    private void stopProgram() {
+        initializer.cancelAll();
+        Controller.isRunning = false;
     }
 
     private void cancelAllTasks() {

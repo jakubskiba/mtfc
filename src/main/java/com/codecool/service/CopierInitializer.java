@@ -131,4 +131,8 @@ public class CopierInitializer {
             this.tasks.remove(copier);
         }
     }
+
+    public void shutdown() {
+        this.copierExecutor.shutdown();
+    }
 }
