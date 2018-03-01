@@ -46,19 +46,13 @@ public class UserInput extends Thread {
 
     private void cancelAllTasks() {
 
-        for (FileCopier copier : Controller.copiers) {
-            copier.interrupt();
-        }
+        initializer.cancelAll();
+
 
     }
 
     private void cancelTask(int id) {
-
-        for (FileCopier copier : Controller.copiers) {
-            if (copier.getId() == id) {
-                copier.interrupt();
-            }
-        }
+        initializer.cancelOne(id);
 
     }
 
