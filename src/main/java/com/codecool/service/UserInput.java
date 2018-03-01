@@ -24,7 +24,43 @@ public class UserInput extends Thread {
     @Override
     public void run() {
         view.cleanScreen();
-        this.createCopyProcess();
+
+        switch (view.getOption()) {
+
+            case "1":
+                this.createCopyProcess();
+                break;
+
+            case "2":
+                this.cancelAllTasks();
+                break;
+
+            case "3":
+                view.printInfo(Controller.informationList);
+                int threadIdToCancel = view.getThreadId();
+                this.cancelTask(threadIdToCancel);
+                break;
+
+        }
+
+    }
+
+    private void cancelAllTasks() {
+
+        for (FileCopier copier : Controller.copiers) {
+            copier.interrupt();
+        }
+
+    }
+
+    private void cancelTask(int id) {
+
+        for (FileCopier copier : Controller.copiers) {
+            if (copier.getId() == id) {
+                copier.interrupt();
+            }
+        }
+
     }
 
     private void initiateProcess(String inputFile, String outputFile) throws FileNotFoundException {
