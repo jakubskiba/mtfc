@@ -7,6 +7,9 @@ import com.codecool.view.View;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
 
 public class Controller {
     private View view;
@@ -22,23 +25,21 @@ public class Controller {
     }
 
     public void startController() {
+        ExecutorService executorService = Executors.newFixedThreadPool(1);
         while (true) {
             UserOutput userOutput = new UserOutput(view);
-            userOutput.start();
-
+            Future outputFuture = executorService.submit(userOutput);
             view.getLine();
-            userOutput.interrupt();
+            outputFuture.cancel(true);
 
             UserInput userInput = new UserInput(view, initializer);
-            userInput.start();
-
-            synchronized (userInput) {
+            Future inputFuture = executorService.submit(userInput);
+            while (!inputFuture.isDone()) {
                 try {
-                    userInput.join();
+                    Thread.sleep(0, 1);
                 } catch (InterruptedException e) {
                 }
             }
-
         }
     }
 }
