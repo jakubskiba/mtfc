@@ -27,7 +27,7 @@ There are two variables:
 
 ## Start
 If you are unix user:
-To start using simple clone repo and execute run.sh script.
+simply clone repo and execute run.sh script.
 
 In other case:
 run maven package and then execute jar file.
