@@ -10,6 +10,7 @@ during [Codecool](https://codecool.pl/) course.
 * Java 8
 * Multithreading
 * Spring context
+* Maven
 
 ## Features
 * Thread pool
