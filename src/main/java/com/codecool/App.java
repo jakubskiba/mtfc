@@ -3,6 +3,7 @@ package com.codecool;
 import com.codecool.controller.Controller;
 import com.codecool.service.CopierInitializer;
 import com.codecool.view.View;
+import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 import java.util.Scanner;
 import java.util.concurrent.ExecutorService;
@@ -10,10 +11,8 @@ import java.util.concurrent.Executors;
 
 public class App {
     public static void main( String[] args ) {
-        Scanner in = new Scanner(System.in);
-        ExecutorService copierExecutor = Executors.newFixedThreadPool(4);
-        CopierInitializer initializer = new CopierInitializer(copierExecutor, false);
-        View view = new View(in);
-        new Controller(view, initializer).startController();
+        ClassPathXmlApplicationContext ctx = new ClassPathXmlApplicationContext("context.xml");
+        Controller controller = (Controller) ctx.getBean("mainController");
+        controller.startController();
     }
 }

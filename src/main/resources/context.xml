@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+    <bean class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+        <property name="locations" value="classpath:application.properties"/>
+    </bean>
+    <bean id="view" class="com.codecool.view.View" />
+    <bean id="copierExecutor" class="java.util.concurrent.Executors" factory-method="newFixedThreadPool">
+        <constructor-arg value="${mtfc.copierThreads}"></constructor-arg>
+    </bean>
+    <bean id="initializer" class="com.codecool.service.CopierInitializer">
+        <constructor-arg ref="copierExecutor"/>
+        <constructor-arg value="${mtfc.enableDelay}"/>
+    </bean>
+    <bean id="mainController" class="com.codecool.controller.Controller">
+        <constructor-arg ref="view"/>
+        <constructor-arg ref="initializer"/>
+    </bean>
+
+</beans>
