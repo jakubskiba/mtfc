@@ -35,6 +35,12 @@ public class UserInput extends Thread {
                 this.cancelAllTasks();
                 break;
 
+            case "3":
+                view.printInfo(Controller.informationList);
+                int threadIdToCancel = view.getThreadId();
+                this.cancelTask(threadIdToCancel);
+                break;
+
         }
 
     }
@@ -43,6 +49,16 @@ public class UserInput extends Thread {
 
         for (FileCopier copier : Controller.copiers) {
             copier.interrupt();
+        }
+
+    }
+
+    private void cancelTask(int id) {
+
+        for (FileCopier copier : Controller.copiers) {
+            if (copier.getId() == id) {
+                copier.interrupt();
+            }
         }
 
     }

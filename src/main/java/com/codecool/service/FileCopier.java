@@ -33,6 +33,7 @@ public class FileCopier extends Thread {
     public void run() {
 
         this.size = (int) new File(this.inputFile).length();
+        this.threadInformation.setThreadId((int) this.getId());
         this.copy();
     }
 

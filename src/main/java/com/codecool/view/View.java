@@ -18,6 +18,11 @@ public class View {
         return in.nextLine();
     }
 
+    public int getThreadId() {
+        System.out.print("Choose task id to cancel: ");
+        return Integer.valueOf(in.nextLine());
+    }
+
     public String getToPath() {
         System.out.print("to path: ");
         return in.nextLine();
@@ -41,7 +46,7 @@ public class View {
 
     public void printInfo(List<ThreadInformation> informationList) {
         cleanScreen();
-        System.out.printf("|%-30s|%-30s|%-8s|%-10s|%n", "from", "to", "progress", "status bar");
+        System.out.printf("  |%-30s|%-30s|%-8s|%-10s|%n", "from", "to", "progress", "status bar");
 
         for(int i = 0; i<44;i++) {
             System.out.print("-");
@@ -70,7 +75,7 @@ public class View {
         String from = getLastCharacters(info.getFrom(), PATH_CELL_WIDTH);
         String to = getLastCharacters(info.getTo(), PATH_CELL_WIDTH);
 
-        sb.append(String.format("|%-30s|%-30s|%-7d%%|", from, to, info.getProgress()));
+        sb.append(String.format("%d|%-30s|%-30s|%-7d%%|", info.getThreadId(), from, to, info.getProgress()));
         int progress = info.getProgress() / 10;
         int rest = 10 - progress;
 

@@ -15,6 +15,15 @@ public class ThreadInformation {
     private Integer portionSize;
     private Boolean isChanged;
     private Boolean isCancelled;
+    private Integer threadId;
+
+    public Integer getThreadId() {
+        return threadId;
+    }
+
+    public void setThreadId(Integer threadId) {
+        this.threadId = threadId;
+    }
 
     public Boolean getCancelled() {
         return isCancelled;
