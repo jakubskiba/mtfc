@@ -85,14 +85,5 @@ public class ThreadInformation {
     public Boolean isDone() {
         return progress == 100;
     }
-
-
-    public static void main(String[] args) {
-        List<ThreadInformation> list = new ArrayList<>();
-
-        list.add(new ThreadInformation("bla", "bua", 10, 1024));
-        list.add(new ThreadInformation("bl1a", "bua2", 20, 1024));
-
-        new View(new Scanner(System.in)).printInfo(list);
-    }
+    
 }
