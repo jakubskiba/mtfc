@@ -123,8 +123,8 @@ public class View {
                     + "1. Copy next file\n"
                     + "2. Cancel all copies\n"
                     + "3. Cancel specific copy\n"
-                    + "4. Exit program (stops all copying process)"
-                    + "or press enter to go back to the preview";
+                    + "4. Exit program (stops all copying process)\n"
+                    + "  or press enter to go back to the preview";
         System.out.println(menu);
 
         return in.nextLine();
