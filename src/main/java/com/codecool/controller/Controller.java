@@ -16,9 +16,7 @@ public class Controller {
     private CopierInitializer initializer;
 
     public static List<ThreadInformation> informationList = new ArrayList<>();
-    public static List<FileCopier> copiers = new ArrayList<>();
-
-
+    
     public Controller(View view, CopierInitializer initializer) {
         this.view = view;
         this.initializer = initializer;
