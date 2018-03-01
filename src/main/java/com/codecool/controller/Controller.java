@@ -26,24 +26,35 @@ public class Controller {
     public void startController() {
         ExecutorService ioExecutor = Executors.newFixedThreadPool(1);
         while (isRunning) {
-            UserOutput userOutput = new UserOutput(view);
-            userOutput.setPriority(Thread.MAX_PRIORITY);
-            Future outputFuture = ioExecutor.submit(userOutput);
-            view.getLine();
-            outputFuture.cancel(true);
-
-            UserInput userInput = new UserInput(view, initializer);
-            userInput.setPriority(Thread.MAX_PRIORITY);
-            Future inputFuture = ioExecutor.submit(userInput);
-            while (!inputFuture.isDone()) {
-                try {
-                    Thread.sleep(0, 1);
-                } catch (InterruptedException e) {
-                }
-            }
+            handleIO(ioExecutor);
         }
 
         ioExecutor.shutdown();
         initializer.shutdown();
+    }
+
+    private void handleIO(ExecutorService ioExecutor) {
+        handleOutput(ioExecutor);
+        handleInput(ioExecutor);
+    }
+
+    private void handleOutput(ExecutorService ioExecutor) {
+        UserOutput userOutput = new UserOutput(view);
+        userOutput.setPriority(Thread.MAX_PRIORITY);
+        Future outputFuture = ioExecutor.submit(userOutput);
+        view.getLine();
+        outputFuture.cancel(true);
+    }
+
+    private void handleInput(ExecutorService ioExecutor) {
+        UserInput userInput = new UserInput(view, initializer);
+        userInput.setPriority(Thread.MAX_PRIORITY);
+        Future inputFuture = ioExecutor.submit(userInput);
+        while (!inputFuture.isDone()) {
+            try {
+                Thread.sleep(0, 1);
+            } catch (InterruptedException e) {
+            }
+        }
     }
 }
