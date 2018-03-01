@@ -124,4 +124,9 @@ public class View {
         System.err.println("File is locked!");
         getLine();
     }
+
+    public void printSameFileException() {
+        System.err.println("This is the same file!");
+        getLine();
+    }
 }

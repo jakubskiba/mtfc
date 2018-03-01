@@ -2,6 +2,7 @@ package com.codecool.service;
 
 import com.codecool.controller.Controller;
 import com.codecool.exception.FileIsLockedException;
+import com.codecool.exception.SameFileException;
 import com.codecool.model.ThreadInformation;
 
 import java.io.*;
@@ -22,13 +23,15 @@ public class CopierInitializer {
         this.tasks = new Hashtable<>();
     }
 
-    public void initialize(String inputFile, String outputFile) throws FileNotFoundException, FileIsLockedException {
+    public void initialize(String inputFile, String outputFile) throws FileNotFoundException, FileIsLockedException, SameFileException {
         cleanTasks();
+
+        checkIsTheSameFile(inputFile, outputFile);
+        checkOutputFile(outputFile);
 
         FileInputStream inputStream = new FileInputStream(inputFile);
         FileOutputStream outputStream = new FileOutputStream(outputFile);
 
-        checkOutputFile(outputFile);
 
         ThreadInformation threadInformation = new ThreadInformation(inputFile, outputFile, 0, 1024);
         Controller.informationList.add(threadInformation);
@@ -39,20 +42,35 @@ public class CopierInitializer {
         tasks.put(fileCopier.getId(), newTask);
     }
 
+    private void checkIsTheSameFile(String inputFile, String outputFile) throws SameFileException {
+        try {
+            if(isTheSameFile(inputFile, outputFile)) {
+                throw new SameFileException();
+            }
+        } catch (IOException e) {
+            throw new SameFileException();
+        }
+    }
+
+    private boolean isTheSameFile(String path1, String path2) throws IOException {
+        File file1 = new File(path1);
+        File file2 = new File(path2);
+
+        return file1.getCanonicalPath().equals(file2.getCanonicalPath());
+    }
+
     private void checkOutputFile(String outputFile) throws FileIsLockedException {
         List<String> blockedFilePaths = getBlockedFilePaths();
 
         for(String blockedPath : blockedFilePaths) {
-            File newFile = new File(outputFile);
-            File existingFile = new File(blockedPath);
-
             try {
-                if(existingFile.getCanonicalPath().equals(newFile.getCanonicalPath())) {
+                if(isTheSameFile(outputFile, blockedPath)) {
                     throw new FileIsLockedException();
                 }
             } catch (IOException e) {
                 throw new FileIsLockedException();
             }
+
         }
     }
 

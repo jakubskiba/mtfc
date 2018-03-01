@@ -2,6 +2,7 @@ package com.codecool.controller;
 
 import com.codecool.controller.Controller;
 import com.codecool.exception.FileIsLockedException;
+import com.codecool.exception.SameFileException;
 import com.codecool.model.ThreadInformation;
 import com.codecool.service.CopierInitializer;
 import com.codecool.service.FileCopier;
@@ -74,6 +75,8 @@ public class UserInput extends Thread {
             view.printNoFileError();
         } catch (FileIsLockedException e) {
             view.printFileIsLockedException();
+        } catch (SameFileException e) {
+            view.printSameFileException();
         }
     }
 
