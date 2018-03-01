@@ -26,7 +26,6 @@ public class Controller {
             UserOutput userOutput = new UserOutput(view);
             userOutput.start();
 
-            System.out.println("Press enter to create new copy");
             view.getLine();
             userOutput.interrupt();
 

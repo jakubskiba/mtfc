@@ -101,6 +101,7 @@ public class View {
     }
 
     public String getLine() {
+        System.out.println("Press enter");
         return in.nextLine();
     }
 
@@ -112,5 +113,9 @@ public class View {
         System.out.println(menu);
 
         return in.nextLine();
+    }
+
+    public void printOverrideError() {
+        System.out.println("Can't overwrite existing file!");
     }
 }

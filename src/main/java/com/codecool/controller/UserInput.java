@@ -70,10 +70,9 @@ public class UserInput extends Thread {
         try {
 
             if (!isOverwrite && new File(outputFile).isFile()) {
-                System.out.println("Can't overwrite existing file!");
+                view.printOverrideError();
             } else {
                 this.initializer.initialize(inputFile, outputFile);
-                System.out.println("started");
             }
 
         } catch (FileNotFoundException e) {
