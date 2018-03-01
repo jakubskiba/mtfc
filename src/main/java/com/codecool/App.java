@@ -12,7 +12,7 @@ public class App {
     public static void main( String[] args ) {
         Scanner in = new Scanner(System.in);
         ExecutorService copierExecutor = Executors.newFixedThreadPool(4);
-        CopierInitializer initializer = new CopierInitializer(copierExecutor);
+        CopierInitializer initializer = new CopierInitializer(copierExecutor, false);
         View view = new View(in);
         new Controller(view, initializer).startController();
     }

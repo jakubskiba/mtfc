@@ -14,12 +14,14 @@ public class FileCopier extends Thread {
     private FileOutputStream outputStream;
     private int portionSize;
     private ThreadInformation threadInformation;
+    private boolean isDelayed;
 
     public FileCopier(FileInputStream inputStream,
-                      FileOutputStream outputStream, ThreadInformation threadInformation) {
+                      FileOutputStream outputStream, ThreadInformation threadInformation, Boolean isDelayed) {
         this.size = 0;
         this.inputStream = inputStream;
         this.outputStream = outputStream;
+        this.isDelayed = isDelayed;
 
         this.threadInformation = threadInformation;
 
@@ -73,7 +75,11 @@ public class FileCopier extends Thread {
         for (int i = 0; i<portionsAmount; i++) {
             this.inputStream.read(portion);
             this.outputStream.write(portion);
-            Thread.sleep(0, 1);
+            if(isDelayed) {
+                Thread.sleep(0, 1);
+            } else if(Thread.interrupted()) {
+                throw new InterruptedException();
+            }
 
             int previousProgress = this.progress;
             this.progress = (int) ((float) i / portionsAmount * 100);

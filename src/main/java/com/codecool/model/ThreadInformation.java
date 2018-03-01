@@ -85,5 +85,5 @@ public class ThreadInformation {
     public Boolean isDone() {
         return progress == 100;
     }
-    
+
 }

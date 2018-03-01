@@ -17,10 +17,12 @@ import java.util.stream.Collectors;
 public class CopierInitializer {
     private ExecutorService copierExecutor;
     private Map<Long, Future> tasks;
+    private Boolean isDelayed;
 
-    public CopierInitializer(ExecutorService copierExecutor) {
+    public CopierInitializer(ExecutorService copierExecutor, Boolean isDelayed) {
         this.copierExecutor = copierExecutor;
         this.tasks = new Hashtable<>();
+        this.isDelayed = isDelayed;
     }
 
     public void initialize(String inputFile, String outputFile) throws FileNotFoundException, FileIsLockedException, SameFileException {
@@ -37,7 +39,7 @@ public class CopierInitializer {
         ThreadInformation threadInformation = new ThreadInformation(inputFile, outputFile, 0, 1024);
         Controller.informationList.add(threadInformation);
 
-        FileCopier fileCopier = new FileCopier(inputStream, outputStream, threadInformation);
+        FileCopier fileCopier = new FileCopier(inputStream, outputStream, threadInformation, isDelayed);
         fileCopier.setPriority(Thread.NORM_PRIORITY);
         Future newTask = this.copierExecutor.submit(fileCopier);
 
