@@ -1,23 +1,18 @@
 package com.codecool.controller;
 
-import com.codecool.controller.Controller;
 import com.codecool.exception.FileIsLockedException;
 import com.codecool.exception.SameFileException;
-import com.codecool.model.ThreadInformation;
-import com.codecool.service.CopierInitializer;
-import com.codecool.service.FileCopier;
+import com.codecool.service.CopierManager;
 import com.codecool.view.View;
 
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
 
 public class UserInput extends Thread {
     private View view;
-    private CopierInitializer initializer;
+    private CopierManager initializer;
 
-    public UserInput(View view, CopierInitializer initializer) {
+    public UserInput(View view, CopierManager initializer) {
         this.view = view;
         this.initializer = initializer;
     }

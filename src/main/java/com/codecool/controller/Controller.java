@@ -1,8 +1,7 @@
 package com.codecool.controller;
 
 import com.codecool.model.ThreadInformation;
-import com.codecool.service.CopierInitializer;
-import com.codecool.service.FileCopier;
+import com.codecool.service.CopierManager;
 import com.codecool.view.View;
 
 import java.util.ArrayList;
@@ -13,12 +12,12 @@ import java.util.concurrent.Future;
 
 public class Controller {
     private View view;
-    private CopierInitializer initializer;
+    private CopierManager initializer;
 
     public static Boolean isRunning = true;
     public static List<ThreadInformation> informationList = new ArrayList<>();
     
-    public Controller(View view, CopierInitializer initializer) {
+    public Controller(View view, CopierManager initializer) {
         this.view = view;
         this.initializer = initializer;
     }

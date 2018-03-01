@@ -14,12 +14,12 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Future;
 import java.util.stream.Collectors;
 
-public class CopierInitializer {
+public class CopierManager {
     private ExecutorService copierExecutor;
     private Map<Long, Future> tasks;
     private Boolean isDelayed;
 
-    public CopierInitializer(ExecutorService copierExecutor, Boolean isDelayed) {
+    public CopierManager(ExecutorService copierExecutor, Boolean isDelayed) {
         this.copierExecutor = copierExecutor;
         this.tasks = new Hashtable<>();
         this.isDelayed = isDelayed;

@@ -9,7 +9,7 @@
     <bean id="copierExecutor" class="java.util.concurrent.Executors" factory-method="newFixedThreadPool">
         <constructor-arg value="${mtfc.copierThreads}"></constructor-arg>
     </bean>
-    <bean id="initializer" class="com.codecool.service.CopierInitializer">
+    <bean id="initializer" class="com.codecool.service.CopierManager">
         <constructor-arg ref="copierExecutor"/>
         <constructor-arg value="${mtfc.enableDelay}"/>
     </bean>
