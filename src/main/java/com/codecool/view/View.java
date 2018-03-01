@@ -9,8 +9,8 @@ public class View {
     private final int PATH_CELL_WIDTH = 30;
     private Scanner in;
 
-    public View(Scanner in) {
-        this.in = in;
+    public View() {
+        this.in = new Scanner(System.in);
     }
 
     public String getFromPath() {
@@ -46,9 +46,9 @@ public class View {
 
     public void printInfo(List<ThreadInformation> informationList) {
         cleanScreen();
-        System.out.printf("  |%-30s|%-30s|%-8s|%-10s|%n", "from", "to", "progress", "status bar");
+        System.out.printf("|%-3s|%-30s|%-30s|%-8s|%-40s|%n","id", "from", "to", "progress", "status bar");
 
-        for(int i = 0; i<44;i++) {
+        for(int i = 0; i<117;i++) {
             System.out.print("-");
         }
 
@@ -57,6 +57,8 @@ public class View {
         for(ThreadInformation info : informationList) {
             System.out.println(getInfoString(info));
         }
+
+        System.out.println("Press enter to see menu");
 
     }
 
@@ -74,10 +76,18 @@ public class View {
         StringBuilder sb = new StringBuilder();
         String from = getLastCharacters(info.getFrom(), PATH_CELL_WIDTH);
         String to = getLastCharacters(info.getTo(), PATH_CELL_WIDTH);
+        String status = getStatus(info);
+        String progressBar = getProgressBar(info);
+        String threadId = info.getThreadId() == null ? "" : info.getThreadId().toString();
+        sb.append(String.format("|%-3s|%-30s|%-30s|%-8s|%-40s|", threadId, from, to, status, progressBar));
 
-        sb.append(String.format("%d|%-30s|%-30s|%-7d%%|", info.getThreadId(), from, to, info.getProgress()));
-        int progress = info.getProgress() / 10;
-        int rest = 10 - progress;
+        return sb.toString();
+    }
+
+    private String getProgressBar(ThreadInformation info) {
+        StringBuilder sb = new StringBuilder();
+        int progress = info.getProgress() / 5 * 2;
+        int rest = 40 - progress;
 
         for(int i = 0; i < progress; i++) {
             sb.append("=");
@@ -87,17 +97,20 @@ public class View {
             sb.append(" ");
         }
 
-        sb.append("|");
+        return sb.toString();
+    }
 
-        String infoString = sb.toString();
 
-        if (progress == 10) {
-            infoString = infoString.replace("100    %", "  Done  ");
-        } else if (info.getCancelled()) {
-            infoString = infoString.replace("     %", "Cancel");
+    private String getStatus(ThreadInformation info) {
+        if (info.getCancelled()) {
+            return "Cancel";
+        } else if(info.getProgress() == 100) {
+            return "Done";
+        } else if(!info.getStarted()) {
+            return "Wait";
+        } else {
+            return info.getProgress() + "%";
         }
-
-        return infoString;
     }
 
     public String getLine() {
@@ -106,10 +119,11 @@ public class View {
     }
 
     public String getOption() {
-        String menu = "Choose an option [1/2]:\n"
+        String menu = "Choose an option [1,2,3,4]:\n"
                     + "1. Copy next file\n"
                     + "2. Cancel all copies\n"
-                    + "3. Cancel specific copy";
+                    + "3. Cancel specific copy\n"
+                    + "or press enter to go back to the preview";
         System.out.println(menu);
 
         return in.nextLine();

@@ -15,6 +15,7 @@ public class ThreadInformation {
     private Integer portionSize;
     private Boolean isChanged;
     private Boolean isCancelled;
+    private Boolean isStarted;
     private Integer threadId;
 
     public Integer getThreadId() {
@@ -40,6 +41,7 @@ public class ThreadInformation {
         this.portionSize = portionSize;
         this.isChanged = true;
         this.isCancelled = false;
+        this.isStarted = false;
     }
 
     public String getFrom() {
@@ -86,4 +88,11 @@ public class ThreadInformation {
         return progress == 100;
     }
 
+    public Boolean getStarted() {
+        return isStarted;
+    }
+
+    public void setStarted(Boolean started) {
+        isStarted = started;
+    }
 }
