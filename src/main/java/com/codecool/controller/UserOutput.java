@@ -1,4 +1,4 @@
-package com.codecool.service;
+package com.codecool.controller;
 
 import com.codecool.controller.Controller;
 import com.codecool.model.ThreadInformation;
