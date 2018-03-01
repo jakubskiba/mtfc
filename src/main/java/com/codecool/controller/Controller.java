@@ -19,9 +19,6 @@ public class Controller {
     }
 
     public void startController() {
-        view.printInfo(Controller.informationList);
-
-
         while (true) {
             UserOutput userOutput = new UserOutput(view);
             userOutput.start();

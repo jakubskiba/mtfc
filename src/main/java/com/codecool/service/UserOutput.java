@@ -7,6 +7,7 @@ import com.codecool.view.View;
 public class UserOutput extends Thread {
 
     View view;
+    private Boolean isScreenEmpty = true;
 
     public UserOutput(View view) {
         this.view = view;
@@ -15,7 +16,7 @@ public class UserOutput extends Thread {
     @Override
     public void run() {
         while (!this.isInterrupted()) {
-            printInfo();
+            printInfo(isScreenEmpty);
             try {
                 sleep(1000);
             } catch (InterruptedException e) {
@@ -24,8 +25,8 @@ public class UserOutput extends Thread {
         }
     }
 
-    private void printInfo() {
-        Boolean isAnyInfoUpdated = false;
+    private void printInfo(Boolean reprint) {
+        Boolean isAnyInfoUpdated = reprint;
         for(ThreadInformation information : Controller.informationList) {
             if(information.getChanged()) {
                 isAnyInfoUpdated = true;
@@ -35,7 +36,7 @@ public class UserOutput extends Thread {
 
         if(isAnyInfoUpdated) {
             view.printInfo(Controller.informationList);
-            isAnyInfoUpdated = false;
+            isScreenEmpty = false;
         }
     }
 }

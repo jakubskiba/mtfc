@@ -11,18 +11,14 @@ import java.io.FileOutputStream;
 
 public class UserInput extends Thread {
     private View view;
-    private Boolean isGettingData = false;
 
     public UserInput(View view) {
         this.view = view;
     }
 
-    public Boolean getGettingData() {
-        return isGettingData;
-    }
-
     @Override
     public void run() {
+        System.err.println("starting input");
         view.cleanScreen();
 
         switch (view.getOption()) {
@@ -41,8 +37,11 @@ public class UserInput extends Thread {
                 this.cancelTask(threadIdToCancel);
                 break;
 
-        }
+//            default:
+//                return;
 
+        }
+        System.err.println("exit input");
     }
 
     private void cancelAllTasks() {
@@ -73,7 +72,6 @@ public class UserInput extends Thread {
     }
 
     private void createCopyProcess() {
-        isGettingData = true;
         String inputFile = view.getFromPath();
         String outputFile = view.getToPath();
         boolean isOverwrite = view.getOverwrite();
@@ -90,7 +88,6 @@ public class UserInput extends Thread {
         } catch (FileNotFoundException e) {
             view.printNoFileError();
         }
-        isGettingData = false;
     }
 
 }
