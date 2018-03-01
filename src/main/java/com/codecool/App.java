@@ -11,7 +11,7 @@ import java.util.concurrent.Executors;
 public class App {
     public static void main( String[] args ) {
         Scanner in = new Scanner(System.in);
-        ExecutorService copierExecutor = Executors.newFixedThreadPool(2);
+        ExecutorService copierExecutor = Executors.newFixedThreadPool(4);
         CopierInitializer initializer = new CopierInitializer(copierExecutor);
         View view = new View(in);
         new Controller(view, initializer).startController();

@@ -27,7 +27,8 @@ public class CopierInitializer {
         cleanTasks();
 
         checkIsTheSameFile(inputFile, outputFile);
-        checkOutputFile(outputFile);
+        checkFile(outputFile, getBlockedFilePaths());
+        checkFile(inputFile, getBlockedOutputPaths());
 
         FileInputStream inputStream = new FileInputStream(inputFile);
         FileOutputStream outputStream = new FileOutputStream(outputFile);
@@ -60,12 +61,12 @@ public class CopierInitializer {
         return file1.getCanonicalPath().equals(file2.getCanonicalPath());
     }
 
-    private void checkOutputFile(String outputFile) throws FileIsLockedException {
-        List<String> blockedFilePaths = getBlockedFilePaths();
+    private void checkFile(String filepath, List<String> blockedPaths) throws FileIsLockedException {
+        List<String> blockedFilePaths = blockedPaths;
 
         for(String blockedPath : blockedFilePaths) {
             try {
-                if(isTheSameFile(outputFile, blockedPath)) {
+                if(isTheSameFile(filepath, blockedPath)) {
                     throw new FileIsLockedException();
                 }
             } catch (IOException e) {
@@ -75,15 +76,28 @@ public class CopierInitializer {
         }
     }
 
-    private List<String> getBlockedFilePaths() {
-        List<ThreadInformation> activeThreads = Controller.informationList
+    private List<ThreadInformation> getActiveThreadInfo() {
+        return Controller.informationList
                 .stream()
                 .filter(info -> !info.isDone() && !info.getCancelled())
                 .collect(Collectors.toList());
+    }
+
+    private List<String> getBlockedFilePaths() {
+        List<ThreadInformation> activeThreads = getActiveThreadInfo();
 
         List<String> blockedFilePaths = new ArrayList<>();
         activeThreads.stream().map(ThreadInformation::getTo).forEach(blockedFilePaths::add);
         activeThreads.stream().map(ThreadInformation::getFrom).forEach(blockedFilePaths::add);
+
+        return blockedFilePaths;
+    }
+
+    private List<String> getBlockedOutputPaths() {
+        List<ThreadInformation> activeThreads = getActiveThreadInfo();
+
+        List<String> blockedFilePaths = new ArrayList<>();
+        activeThreads.stream().map(ThreadInformation::getTo).forEach(blockedFilePaths::add);
 
         return blockedFilePaths;
     }
