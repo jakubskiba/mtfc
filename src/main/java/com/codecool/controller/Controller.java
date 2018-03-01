@@ -25,15 +25,15 @@ public class Controller {
     }
 
     public void startController() {
-        ExecutorService executorService = Executors.newFixedThreadPool(1);
+        ExecutorService ioExecutor = Executors.newFixedThreadPool(1);
         while (true) {
             UserOutput userOutput = new UserOutput(view);
-            Future outputFuture = executorService.submit(userOutput);
+            Future outputFuture = ioExecutor.submit(userOutput);
             view.getLine();
             outputFuture.cancel(true);
 
             UserInput userInput = new UserInput(view, initializer);
-            Future inputFuture = executorService.submit(userInput);
+            Future inputFuture = ioExecutor.submit(userInput);
             while (!inputFuture.isDone()) {
                 try {
                     Thread.sleep(0, 1);
