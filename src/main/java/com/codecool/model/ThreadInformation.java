@@ -82,6 +82,11 @@ public class ThreadInformation {
         isChanged = changed;
     }
 
+    public Boolean isDone() {
+        return progress == 100;
+    }
+
+
     public static void main(String[] args) {
         List<ThreadInformation> list = new ArrayList<>();
 

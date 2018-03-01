@@ -117,5 +117,11 @@ public class View {
 
     public void printOverrideError() {
         System.out.println("Can't overwrite existing file!");
+        getLine();
+    }
+
+    public void printFileIsLockedException() {
+        System.err.println("File is locked!");
+        getLine();
     }
 }
