@@ -1,7 +1,9 @@
-package com.codecool.service;
+package com.codecool.controller;
 
 import com.codecool.controller.Controller;
 import com.codecool.model.ThreadInformation;
+import com.codecool.service.CopierInitializer;
+import com.codecool.service.FileCopier;
 import com.codecool.view.View;
 
 import java.io.File;
@@ -11,14 +13,15 @@ import java.io.FileOutputStream;
 
 public class UserInput extends Thread {
     private View view;
+    private CopierInitializer initializer;
 
-    public UserInput(View view) {
+    public UserInput(View view, CopierInitializer initializer) {
         this.view = view;
+        this.initializer = initializer;
     }
 
     @Override
     public void run() {
-        System.err.println("starting input");
         view.cleanScreen();
 
         switch (view.getOption()) {
@@ -37,11 +40,8 @@ public class UserInput extends Thread {
                 this.cancelTask(threadIdToCancel);
                 break;
 
-//            default:
-//                return;
 
         }
-        System.err.println("exit input");
     }
 
     private void cancelAllTasks() {
@@ -62,15 +62,6 @@ public class UserInput extends Thread {
 
     }
 
-    private void initiateProcess(String inputFile, String outputFile) throws FileNotFoundException {
-        FileInputStream inputStream = new FileInputStream(inputFile);
-        FileOutputStream outputStream = new FileOutputStream(outputFile);
-        ThreadInformation threadInformation = new ThreadInformation(inputFile, outputFile, 0, 1024);
-        FileCopier fileCopier = new FileCopier(inputStream, outputStream, threadInformation);
-        Controller.copiers.add(fileCopier);
-        fileCopier.start();
-    }
-
     private void createCopyProcess() {
         String inputFile = view.getFromPath();
         String outputFile = view.getToPath();
@@ -81,7 +72,7 @@ public class UserInput extends Thread {
             if (!isOverwrite && new File(outputFile).isFile()) {
                 System.out.println("Can't overwrite existing file!");
             } else {
-                this.initiateProcess(inputFile, outputFile);
+                this.initializer.initialize(inputFile, outputFile);
                 System.out.println("started");
             }
 

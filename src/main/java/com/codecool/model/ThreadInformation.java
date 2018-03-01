@@ -40,7 +40,6 @@ public class ThreadInformation {
         this.portionSize = portionSize;
         this.isChanged = true;
         this.isCancelled = false;
-        Controller.informationList.add(this);
     }
 
     public String getFrom() {
