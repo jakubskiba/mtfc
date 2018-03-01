@@ -26,11 +26,13 @@ public class Controller {
         ExecutorService ioExecutor = Executors.newFixedThreadPool(1);
         while (true) {
             UserOutput userOutput = new UserOutput(view);
+            userOutput.setPriority(Thread.MAX_PRIORITY);
             Future outputFuture = ioExecutor.submit(userOutput);
             view.getLine();
             outputFuture.cancel(true);
 
             UserInput userInput = new UserInput(view, initializer);
+            userInput.setPriority(Thread.MAX_PRIORITY);
             Future inputFuture = ioExecutor.submit(userInput);
             while (!inputFuture.isDone()) {
                 try {

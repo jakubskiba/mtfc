@@ -37,6 +37,7 @@ public class CopierInitializer {
         Controller.informationList.add(threadInformation);
 
         FileCopier fileCopier = new FileCopier(inputStream, outputStream, threadInformation);
+        fileCopier.setPriority(Thread.NORM_PRIORITY);
         Future newTask = this.copierExecutor.submit(fileCopier);
 
         tasks.put(fileCopier.getId(), newTask);
